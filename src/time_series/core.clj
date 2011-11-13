@@ -1,7 +1,6 @@
 (ns time-series.core
   (:use [clojure.algo.monads])
-  (:require [clojure.stacktrace :as st]
-            [incanter.core :as incanter]
+  (:require [incanter.core :as incanter]
             [incanter.charts :as charts]))
 
 (defn time-series
