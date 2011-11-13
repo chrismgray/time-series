@@ -55,16 +55,19 @@
   (defn time-series-subtract [x]
     (apply - x))
 
-  (defn time-series-divide
-    "Useful for getting an exception."
-    [x]
-    (/ 1 (apply - x)))
+  (defn deliberate-exception [x]
+    (if (= (count x) 3)
+      (/ 1 0)
+      (apply + x)))
 
   (defn time-series-compound-interest [interest-rate]
     (fn [x]
       (* (+ 1 interest-rate) (last x))))
 
+  (time-series deliberate-exception 1 3 20)
+
   (time-series (time-series-compound-interest 0.03) 100 2 20)
 
-  (time-series-compare [(time-series-compound-interest 0.03) (time-series-compound-interest 0.05)] 100 3 50))
+  (time-series-compare [(time-series-compound-interest 0.03) (time-series-compound-interest 0.05)] 100 3 50)
+  )
 
