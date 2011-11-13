@@ -13,18 +13,16 @@
    It is probably better to use one of the functions `time-series-result'
    or `time-series-trace'."
   [f init-state n num-iterations]
-  (if (= 0 num-iterations)
-    [[init-state] [init-state]]
-   (let [call-f (fn [state]
-                  (let [retval (try (f state)
-                                    (catch Exception e (throw (Exception. (str "caught exception: " (.getMessage e) "\n"
-                                                                               "state is: " state)))))
-                        num (count state)
-                        new-state (vec (if (= num n) (drop 1 (conj state retval)) (conj state retval)))]
-                    [retval new-state]))]
-     ((with-monad state-m
-        (m-seq (cons (fn [s] [(first s) s]) (repeat num-iterations call-f))))
-      (vector init-state)))))
+  (let [call-f (fn [state]
+                 (let [retval (try (f state)
+                                   (catch Exception e (throw (Exception. (str "caught exception: " (.getMessage e) "\n"
+                                                                              "state is: " state)))))
+                       num (count state)
+                       new-state (vec (if (= num n) (drop 1 (conj state retval)) (conj state retval)))]
+                   [retval new-state]))]
+    ((with-monad state-m
+       (m-seq (cons (fn [s] [(first s) s]) (repeat num-iterations call-f))))
+     (vector init-state))))
 
 (defn time-series-result
   "Same parameters as `time-series', but only returns the final result."
