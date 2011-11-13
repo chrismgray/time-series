@@ -1,5 +1,5 @@
 This is a Clojure framework for generating a time series with a
-function.  
+function.  Documentation is contained in the docstrings.
 
 * License
 
