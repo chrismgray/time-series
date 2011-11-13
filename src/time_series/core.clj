@@ -38,7 +38,7 @@
 
 (defn time-series-compare
   "Same parameters as `time-series', but the function f is replaced by a list
-   of functions."
+   of functions.  Shows a chart of the different functions."
   [fs init-state n num-iterations]
   (let [results (map #(time-series-trace % init-state n num-iterations) fs)
         initial-chart (charts/xy-plot (range num-iterations) (first results))
