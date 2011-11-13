@@ -23,7 +23,7 @@
                         new-state (vec (if (= num n) (drop 1 (conj state retval)) (conj state retval)))]
                     [retval new-state]))]
      ((with-monad state-m
-        (m-seq (repeat num-iterations call-f)))
+        (m-seq (cons (fn [s] [(first s) s]) (repeat num-iterations call-f))))
       (vector init-state)))))
 
 (defn time-series-result
@@ -63,10 +63,12 @@
     (fn [x]
       (* (+ 1 interest-rate) (last x))))
 
+  (time-series-trace time-series-add 1 2 20) ; notice anything?
+
   (time-series deliberate-exception 1 3 20)
 
   (time-series (time-series-compound-interest 0.03) 100 2 20)
 
-  (time-series-compare [(time-series-compound-interest 0.03) (time-series-compound-interest 0.05)] 100 3 50)
+  (time-series-compare [(time-series-compound-interest 0.03) (time-series-compound-interest 0.05)] 100 1 50)
   )
 
