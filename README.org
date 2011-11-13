@@ -1,0 +1,8 @@
+This is a Clojure framework for generating a time series with a
+function.  
+
+* License
+
+Copyright (C) 2011 Chris Gray
+
+Distributed under the GNU GPL Version 3.
