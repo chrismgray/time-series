@@ -2,5 +2,35 @@
   (:use [time-series.core])
   (:use [clojure.test]))
 
-(deftest replace-me ;; FIXME: write
-  (is false "No tests have been written."))
+(defn time-series-add [x]
+  (apply + x))
+
+(defn time-series-subtract [x]
+  (apply - x))
+
+(defn deliberate-exception [x]
+  (if (= (count x) 3)
+    (/ 1 0)
+    (apply + x)))
+
+(defn time-series-compound-interest [interest-rate]
+  (fn [x]
+    (* (+ 1 interest-rate) (last x))))
+
+(deftest addition-test
+  (is (= (time-series-trace time-series-add 1 2 6)
+         '(1 1 2 3 5 8 13))))
+
+(deftest interest-test
+  (is (> (time-series-result (time-series-compound-interest 0.05) 100 1 30)
+         (time-series-result (time-series-compound-interest 0.03) 100 1 30))))
+
+(comment
+
+  (time-series deliberate-exception 1 3 20)
+
+  (time-series (time-series-compound-interest 0.03) 100 2 20)
+
+
+  (time-series-compare [(time-series-compound-interest 0.03) (time-series-compound-interest 0.05)] 100 1 50)
+  )

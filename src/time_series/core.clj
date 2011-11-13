@@ -40,33 +40,7 @@
   [fs init-state n num-iterations]
   (let [results (map #(time-series-trace % init-state n num-iterations) fs)
         initial-chart (charts/xy-plot (range num-iterations) (first results))
-        add-to-chart (fn [[[chart results]]]
-                       [(charts/add-lines chart (range num-iterations) (first results)) (rest results)])
-        chart (first (time-series-result add-to-chart [initial-chart (rest results)] 1 (count (rest results))))]
+        chart (reduce #(charts/add-lines %1 (range num-iterations) %2) initial-chart (rest results))]
     (incanter/view chart)))
 
-(comment
-  (defn time-series-add [x]
-    (apply + x))
-
-  (defn time-series-subtract [x]
-    (apply - x))
-
-  (defn deliberate-exception [x]
-    (if (= (count x) 3)
-      (/ 1 0)
-      (apply + x)))
-
-  (defn time-series-compound-interest [interest-rate]
-    (fn [x]
-      (* (+ 1 interest-rate) (last x))))
-
-  (time-series-trace time-series-add 1 2 20) ; notice anything?
-
-  (time-series deliberate-exception 1 3 20)
-
-  (time-series (time-series-compound-interest 0.03) 100 2 20)
-
-  (time-series-compare [(time-series-compound-interest 0.03) (time-series-compound-interest 0.05)] 100 1 50)
-  )
 
