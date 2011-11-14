@@ -25,6 +25,9 @@
   (is (> (time-series-result (time-series-compound-interest 0.05) 100 1 30)
          (time-series-result (time-series-compound-interest 0.03) 100 1 30))))
 
+(deftest result-test
+  (is (= 13 (time-series-result time-series-add 1 2 6))))
+
 (deftest exception-test
   (is (thrown-with-msg? Exception #"Divide by zero"
         (time-series-result deliberate-exception 100 3 20))))
